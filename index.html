@@ -3,32 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live kamera LZSV – Letisko Spišská Nová Ves</title>
+  <title>Live Kamera LZSV – Spišská Nová Ves</title>
   <style>
-    body { margin: 0; background: #0b1120; color: #f8fafc; font-family: system-ui, sans-serif; text-align: center; }
-    .wrap { max-width: 1280px; margin: 0 auto; padding: 16px; }
-    img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 1px solid #1e293b; }
-    .meta { margin-top: 10px; font-size: 14px; color: #94a3b8; }
+    body { margin: 0; background: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; text-align: center; padding: 15px; }
+    .box { max-width: 1280px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; margin-bottom: 10px; color: #38bdf8; }
+    img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); border: 1px solid #334155; }
+    .meta { margin-top: 10px; font-size: 0.9rem; color: #94a3b8; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h2>Live kamera LZSV – Spišská Nová Ves</h2>
-    <img id="camImage" src="webcam.jpg" alt="LZSV Live Cam">
-    <div class="meta" id="statusText">Automatická aktualizácia každých 30 sekúnd...</div>
+  <div class="box">
+    <h1>LETISKO SPIŠSKÁ NOVÁ VES (LZSV) – LIVE WEBCAM</h1>
+    <img id="cam" src="https://raw.githubusercontent.com/Hornet199/lzsv-cam/main/webcam.jpg" alt="Načítavam snímku z kamery LZSV...">
+    <div class="meta" id="info">Automatická aktualizácia každých 30 sekúnd...</div>
   </div>
   <script>
-    function refreshCamera() {
-      const nextImg = new Image();
-      const bust = Date.now();
-      nextImg.onload = function() {
-        document.getElementById('camImage').src = this.src;
-        document.getElementById('statusText').textContent = 'Posledná kontrola snímky: ' + new Date().toLocaleTimeString('sk-SK');
+    function obnovObrazok() {
+      const img = new Image();
+      const ts = new Date().getTime();
+      // Priame načítanie zo surového repozitára (obchádza 37s build a limity GitHub Pages)
+      const rawUrl = 'https://raw.githubusercontent.com/Hornet199/lzsv-cam/main/webcam.jpg?t=' + ts;
+      img.onload = function() {
+        document.getElementById('cam').src = this.src;
+        document.getElementById('info').innerText = 'Posledná aktualizácia obrazu: ' + new Date().toLocaleTimeString('sk-SK');
       };
-      nextImg.src = 'webcam.jpg?t=' + bust;
+      img.src = rawUrl;
     }
-    setInterval(refreshCamera, 60000);
-    refreshCamera();
+    setInterval(obnovObrazok, 30000);
+    obnovObrazok();
   </script>
 </body>
 </html>
